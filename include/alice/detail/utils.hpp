@@ -39,8 +39,6 @@
 #include <memory>
 #include <string>
 
-#include <fmt/format.h>
-
 namespace alice
 {
 
@@ -87,18 +85,6 @@ inline std::string trim_copy( std::string s )
 {
   trim( s );
   return s;
-}
-
-inline std::string format_with_vector( const std::string& fmtstr, const std::vector<std::string>& values )
-{
-  using ctx = fmt::format_context;
-  std::vector<fmt::basic_format_arg<ctx>> args;
-  for ( const auto& v : values )
-  {
-    args.emplace_back( fmt::internal::make_arg<ctx>( v ) );
-  }
-
-  return fmt::vformat( fmtstr, fmt::basic_format_args<ctx>( args.data(), static_cast<unsigned>( args.size() ) ) );
 }
 
 template<char sep>

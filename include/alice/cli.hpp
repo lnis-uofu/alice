@@ -40,7 +40,9 @@
 #include <vector>
 
 #include <CLI11.hpp>
+#include <fmt/core.h>
 #include <fmt/format.h>
+#include <fmt/args.h>
 
 #include "command.hpp"
 #include "detail/logging.hpp"
@@ -437,14 +439,14 @@ private:
     {
       if ( std::regex_match( line, m, std::regex( p.first ) ) )
       {
-        std::vector<std::string> matches( m.size() - 1u );
+        fmt::dynamic_format_arg_store<fmt::format_context> store;
 
-        for ( auto i = 0u; i < matches.size(); ++i )
+        for ( auto i = 1u; i < m.size(); ++i )
         {
-          matches[i] = std::string( m[i + 1] );
+            store.push_back( std::string( m[i] ) );
         }
+        const auto str = detail::trim_copy( fmt::vformat( p.second, store ) );
 
-        const auto str = detail::trim_copy( detail::format_with_vector( p.second, matches ) );
         return preprocess_alias( str );
       }
     }

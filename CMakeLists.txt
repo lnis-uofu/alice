@@ -35,4 +35,3 @@ endif()
 if(ALICE_TEST)
   add_subdirectory(test)
 endif()
-
